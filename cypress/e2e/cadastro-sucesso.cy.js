@@ -1,3 +1,4 @@
+import { fakerPT_BR as faker } from "@faker-js/faker"
 describe ('Página de Cadastro', ()=>{
     beforeEach(()=>{
         cy.visit('/')
@@ -14,13 +15,14 @@ describe ('Página de Cadastro', ()=>{
    
 
 context('Primeira parte da sessão de cadastro', ()=>{
+     const senha = faker.internet.password({lenght: 8, memorable:true})
     it('Digite dados da clínica e exibe a área para inserção de dados técnicos',()=>{
         cy.contains('a', 'Cadastre-se').click()
-        cy.get('[data-test="inputNome"]').type('Pedro Bastos')
-        cy.get('[data-test="inputCNPJ"]').type('14.582.937/0001-85')
-        cy.get('[data-test="inputEmail"]').type('pedroca@email.com')
-        cy.get('[data-test="inputSenha"]').type('Senha.123')
-        cy.get('[data-test="inputSenhaVerificada"]').type('Senha.123')
+        cy.get('[data-test="inputNome"]').type(faker.internet.username())
+        cy.get('[data-test="inputCNPJ"]').type(faker.string.numeric(14))
+        cy.get('[data-test="inputEmail"]').type(faker.internet.email())
+        cy.get('[data-test="inputSenha"]').type(senha)
+        cy.get('[data-test="inputSenhaVerificada"]').type(senha)
         cy.contains('button', 'Avançar').click()
         cy.contains('Agora, os dados técnicos:').should('be.visible')
         cy.get('.iCNXLk').should('exist').should('be.visible')        
@@ -29,24 +31,25 @@ context('Primeira parte da sessão de cadastro', ()=>{
 })
 
 context('Sessão de cadastro completa', ()=>{
+    const senha = faker.internet.password({lenght: 8, memorable:true})
  it('Cadastrar uma clínica', ()=>{
          cy.contains('a', 'Cadastre-se').click()
-        cy.get('[data-test="inputNome"]').type('Pedro Bastos')
-        cy.get('[data-test="inputCNPJ"]').type('14.582.937/0001-85')
-        cy.get('[data-test="inputEmail"]').type('pedroca@email.com')
-        cy.get('[data-test="inputSenha"]').type('Senha.123')
-        cy.get('[data-test="inputSenhaVerificada"]').type('Senha.123')
+        cy.get('[data-test="inputNome"]').type(faker.internet.username())
+        cy.get('[data-test="inputCNPJ"]').type(faker.string.numeric(14))
+        cy.get('[data-test="inputEmail"]').type(faker.internet.email())
+        cy.get('[data-test="inputSenha"]').type(senha)
+        cy.get('[data-test="inputSenhaVerificada"]').type(senha)
         cy.contains('button', 'Avançar').click()
         cy.contains('Agora, os dados técnicos:').should('be.visible')
 
         cy.get('.iCNXLk').should('exist').should('be.visible')
 
-        cy.get('[data-test="inputTelefone"]').type('24993245544')
-        cy.get('[data-test="inputCEP"]').type('01310-100')
-        cy.get('[data-test="inputRua"]').type('Avenida Paulista')
-        cy.get('[data-test="inputNumero"]').type('242')
-        cy.get('[data-test="inputEstado"]').type('RJ')
-        cy.get('[data-test="inputComplemento"]').type('Casa1')
+        cy.get('[data-test="inputTelefone"]').type(faker.phone.number())
+        cy.get('[data-test="inputCEP"]').type(faker.location.zipCode())
+        cy.get('[data-test="inputRua"]').type(faker.location.street())
+        cy.get('[data-test="inputNumero"]').type(faker.location.buildingNumber())
+        cy.get('[data-test="inputEstado"]').type(faker.location.state({abbreviated:true}))
+        cy.get('[data-test="inputComplemento"]').type(faker.location.secondaryAddress())
 
         cy.contains('button', 'Cadastrar').click()
 
